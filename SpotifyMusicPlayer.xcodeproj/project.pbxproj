@@ -8,6 +8,9 @@
 
 /* Begin PBXBuildFile section */
 		7A0EB25A2DD82E180031D44A /* SpotifyiOS in Frameworks */ = {isa = PBXBuildFile; productRef = 7A0EB2592DD82E180031D44A /* SpotifyiOS */; };
+		7A0EB2E22DD84C9B0031D44A /* RxSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 7A0EB2E12DD84C9B0031D44A /* RxSwift */; };
+		7A0EB2E42DD84C9F0031D44A /* RxCocoa in Frameworks */ = {isa = PBXBuildFile; productRef = 7A0EB2E32DD84C9F0031D44A /* RxCocoa */; };
+		7A0EB2E62DD84CA70031D44A /* RxRelay in Frameworks */ = {isa = PBXBuildFile; productRef = 7A0EB2E52DD84CA70031D44A /* RxRelay */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -40,6 +43,9 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				7A0EB2E42DD84C9F0031D44A /* RxCocoa in Frameworks */,
+				7A0EB2E22DD84C9B0031D44A /* RxSwift in Frameworks */,
+				7A0EB2E62DD84CA70031D44A /* RxRelay in Frameworks */,
 				7A0EB25A2DD82E180031D44A /* SpotifyiOS in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -51,6 +57,7 @@
 			isa = PBXGroup;
 			children = (
 				7A0EB2412DD827630031D44A /* SpotifyMusicPlayer */,
+				7A0EB2E02DD84C9B0031D44A /* Frameworks */,
 				7A0EB2402DD827630031D44A /* Products */,
 			);
 			sourceTree = "<group>";
@@ -61,6 +68,13 @@
 				7A0EB23F2DD827630031D44A /* SpotifyMusicPlayer.app */,
 			);
 			name = Products;
+			sourceTree = "<group>";
+		};
+		7A0EB2E02DD84C9B0031D44A /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Frameworks;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -84,6 +98,9 @@
 			name = SpotifyMusicPlayer;
 			packageProductDependencies = (
 				7A0EB2592DD82E180031D44A /* SpotifyiOS */,
+				7A0EB2E12DD84C9B0031D44A /* RxSwift */,
+				7A0EB2E32DD84C9F0031D44A /* RxCocoa */,
+				7A0EB2E52DD84CA70031D44A /* RxRelay */,
 			);
 			productName = SpotifyMusicPlayer;
 			productReference = 7A0EB23F2DD827630031D44A /* SpotifyMusicPlayer.app */;
@@ -370,6 +387,21 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 7A0EB2582DD82E180031D44A /* XCRemoteSwiftPackageReference "ios-sdk" */;
 			productName = SpotifyiOS;
+		};
+		7A0EB2E12DD84C9B0031D44A /* RxSwift */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 7A0EB2AF2DD849930031D44A /* XCRemoteSwiftPackageReference "RxSwift" */;
+			productName = RxSwift;
+		};
+		7A0EB2E32DD84C9F0031D44A /* RxCocoa */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 7A0EB2AF2DD849930031D44A /* XCRemoteSwiftPackageReference "RxSwift" */;
+			productName = RxCocoa;
+		};
+		7A0EB2E52DD84CA70031D44A /* RxRelay */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 7A0EB2AF2DD849930031D44A /* XCRemoteSwiftPackageReference "RxSwift" */;
+			productName = RxRelay;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};
