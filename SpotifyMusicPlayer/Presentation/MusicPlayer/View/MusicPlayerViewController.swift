@@ -53,6 +53,8 @@ class MusicPlayerViewController: UIViewController {
         
         setupHideKeyboard()
         
+        searchBar.delegate = self
+        
         SpotifySessionManager.shared.connectAppRemote()
     }
 

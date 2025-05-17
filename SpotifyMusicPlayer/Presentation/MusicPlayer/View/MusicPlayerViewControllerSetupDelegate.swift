@@ -16,3 +16,11 @@ extension MusicPlayerViewController: UICollectionViewDelegate, UICollectionViewD
     }
     
 }
+
+extension MusicPlayerViewController: UISearchBarDelegate {
+    
+    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
+        searchBar.resignFirstResponder()
+    }
+    
+}
