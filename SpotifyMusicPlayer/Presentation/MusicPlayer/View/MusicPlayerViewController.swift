@@ -50,6 +50,8 @@ class MusicPlayerViewController: UIViewController {
         setupRx()
         // Do any additional setup after loading the view.
         
+        setupHideKeyboard()
+        
         SpotifySessionManager.shared.connectAppRemote()
     }
 
