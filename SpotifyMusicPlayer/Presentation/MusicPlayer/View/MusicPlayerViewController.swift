@@ -33,6 +33,7 @@ class MusicPlayerViewController: UIViewController {
         return collectionView
     }()
     
+    let vm = MusicPlayerViewModel()
     let disposeBag = DisposeBag()
 
     override func viewDidLoad() {
