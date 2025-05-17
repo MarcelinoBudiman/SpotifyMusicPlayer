@@ -37,7 +37,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
     
     func applicationDidBecomeActive(_ application: UIApplication) {
-        SpotifySessionManager.shared.connectAppRemote()
+        if SpotifySessionManager.shared.isLoggedIn() {
+            SpotifySessionManager.shared.connectAppRemote()
+        } else {
+            // No valid token — prompt user login
+            if let vc = window?.rootViewController {
+                SpotifySessionManager.shared.login(from: vc)
+            }
+        }
     }
 
     // MARK: UISceneSession Lifecycle

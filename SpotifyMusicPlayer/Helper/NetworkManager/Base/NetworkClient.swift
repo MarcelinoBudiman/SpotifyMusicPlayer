@@ -23,6 +23,7 @@ class NetworkSessionClient<Endpoint: EndpointType>: NetworkClient{
         let session = URLSession.shared
         do{
             let request = try self.buildRequest(from: endpoint)
+            print("REQUEST = \(request.url?.absoluteString) \(request.allHTTPHeaderFields)")
             let (data, response) = try await session.data(for: request, delegate: nil)
             guard let response = response as? HTTPURLResponse else{
                 return .failure(.invalidResponse)

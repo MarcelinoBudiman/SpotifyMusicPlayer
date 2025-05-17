@@ -10,6 +10,6 @@ import Foundation
 struct AppConfiguration {
     
     static let baseURL = URL(string: "https://api.spotify.com")!
-    static let token = SpotifySessionManager.shared.sessionManager.session?.accessToken ?? ""
+    static let token = "Bearer \(SpotifySessionManager.shared.session?.accessToken ?? "")"
     
 }

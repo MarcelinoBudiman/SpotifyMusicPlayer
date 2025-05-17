@@ -21,9 +21,7 @@ class MusicPlayerViewModel {
         
         let parameters = ["q" : "artist:\(q)",
                           "type" : "track",
-                          "market" : "ID",
-                          "limit" : "10",
-                          "offset" : "5",]
+                          "market" : "ID",]
         
         let result = await musicPlayerNetworkClient.sendRequest(endpoint: .getSongByArtist(urlParameter: parameters), responseModel: SearchResult.self)
         

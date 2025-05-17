@@ -36,22 +36,22 @@ extension MusicPlayerViewController {
     func setupCollectionViewRx() {
         self.vm.songListPublishSubject
             .observe(on: MainScheduler.instance)
-            .compactMap({ event -> Observable<[Item]> in
+            .compactMap { event -> Observable<[Item]> in
                 switch event {
                     
                 case .next(let data):
                     return Observable.just(data.tracks.items)
                 case .error(let error):
                     // show error message
-                    return Observable.just([])
+                    return Observable.empty()
                 default:
-                    return Observable.just([])
+                    return Observable.empty()
                     
                 }
-            })
-            .subscribe { songs in
-                print("SONGS = \(songs)")
             }
+            .subscribe(onNext: { data in
+                
+            })
             .disposed(by: disposeBag)
     }
     
