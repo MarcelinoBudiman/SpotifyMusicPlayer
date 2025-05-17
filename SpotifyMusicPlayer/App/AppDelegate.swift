@@ -6,7 +6,6 @@
 //
 
 import UIKit
-import SpotifyiOS
 
 @main
 class AppDelegate: UIResponder, UIApplicationDelegate {
