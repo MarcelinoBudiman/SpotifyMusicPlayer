@@ -34,6 +34,14 @@ extension MusicPlayerViewController {
     }
     
     func setupSearchBarRx() {
+        
+        searchBar.rx.searchButtonClicked
+            .observe(on: MainScheduler.instance)
+            .subscribe(onNext: { [weak self] in
+                self?.searchBar.resignFirstResponder()
+            })
+            .disposed(by: disposeBag)
+        
         searchBar.rx.text
             .orEmpty
             .debounce(.milliseconds(500), scheduler: MainScheduler.instance)
