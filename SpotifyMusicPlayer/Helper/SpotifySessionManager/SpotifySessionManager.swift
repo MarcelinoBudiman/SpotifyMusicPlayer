@@ -8,6 +8,7 @@
 import Foundation
 import SpotifyiOS
 
+
 protocol SpotifyPlayerDelegate: AnyObject {
     func didChangePlayerState(_ state: SPTAppRemotePlayerState)
 }
@@ -28,19 +29,17 @@ class SpotifySessionManager: NSObject {
         
         config.tokenSwapURL = nil
         config.tokenRefreshURL = nil
-        
         return config
     }()
-
+    
     lazy var sessionManager: SPTSessionManager = {
         let manager = SPTSessionManager(configuration: configuration, delegate: self)
         return manager
     }()
-
+    
     lazy var appRemote: SPTAppRemote = {
         let remote = SPTAppRemote(configuration: configuration, logLevel: .debug)
         remote.delegate = self
-        
         return remote
     }()
     
@@ -54,32 +53,32 @@ class SpotifySessionManager: NSObject {
             }
         }
     }
-
+    
     override init() {
-        
         super.init()
-
         loadSession()
     }
     
     func loadSession() {
         guard let data = UserDefaults.standard.data(forKey: sessionKey),
               let decoded = try? JSONDecoder().decode(SpotifySessionData.self, from: data)
-        else {
-            return
-        }
-
+        else { return }
+        
         self.session = decoded
         
         if decoded.expirationDate > Date() {
             appRemote.connectionParameters.accessToken = session?.accessToken
         } else {
-            renew()
+            session = nil
         }
     }
     
     func login(from viewController: UIViewController) {
-        let scopes: SPTScope = [.appRemoteControl, .userReadEmail, .userModifyPlaybackState, .userReadPlaybackState, .userReadCurrentlyPlaying]
+        let scopes: SPTScope = [.appRemoteControl,
+                                .userReadEmail,
+                                .userModifyPlaybackState,
+                                .userReadPlaybackState,
+                                .userReadCurrentlyPlaying]
         
         if sessionManager.isSpotifyAppInstalled {
             sessionManager.initiateSession(with: scopes, options: .default, campaign: nil)
@@ -100,7 +99,7 @@ class SpotifySessionManager: NSObject {
         appRemote.connectionParameters.accessToken = token
         appRemote.connect()
     }
-
+    
     func disconnectAppRemote() {
         if appRemote.isConnected {
             appRemote.disconnect()
@@ -114,7 +113,7 @@ class SpotifySessionManager: NSObject {
     func isLoggedIn() -> Bool {
         return session?.expirationDate ?? Date.distantPast > Date()
     }
-
+    
     func play(uri: String) {
         if appRemote.isConnected {
             appRemote.playerAPI?.play(uri, callback: { result, error in
@@ -129,54 +128,57 @@ class SpotifySessionManager: NSObject {
             connectAppRemote()
         }
     }
-    
 }
 
-// MARK: - Implement Spotify SDK Delegate
+// MARK: - SPTSessionManagerDelegate
 extension SpotifySessionManager: SPTSessionManagerDelegate {
     func sessionManager(manager: SPTSessionManager, didInitiate session: SPTSession) {
         print("Spotify session initiated!")
-        self.session = SpotifySessionData(accessToken: session.accessToken, refreshToken: session.refreshToken, expirationDate: session.expirationDate)
+        self.session = SpotifySessionData(accessToken: session.accessToken,
+                                          refreshToken: session.refreshToken,
+                                          expirationDate: session.expirationDate)
         connectAppRemote()
     }
-
+    
     func sessionManager(manager: SPTSessionManager, didFailWith error: Error) {
         print("Spotify session failed: \(error.localizedDescription)")
     }
-
+    
     func sessionManager(manager: SPTSessionManager, didRenew session: SPTSession) {
-        self.session = SpotifySessionData(accessToken: session.accessToken, refreshToken: session.refreshToken, expirationDate: session.expirationDate)
+        print("Spotify session renewed!")
+        self.session = SpotifySessionData(accessToken: session.accessToken,
+                                          refreshToken: session.refreshToken,
+                                          expirationDate: session.expirationDate)
         connectAppRemote()
     }
 }
 
+// MARK: - SPTAppRemoteDelegate
 extension SpotifySessionManager: SPTAppRemoteDelegate {
-    func appRemote(_ appRemote: SPTAppRemote, didFailConnectionAttemptWithError error: (any Error)?) {
-        print("AppRemote failed: \(error?.localizedDescription ?? "unknown")")
-        
-        DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) {
+    func appRemote(_ appRemote: SPTAppRemote, didFailConnectionAttemptWithError error: Error?) {
+        print("AppRemote failed connection attempt: \(error?.localizedDescription ?? "unknown")")
+        // Retry connecting after delay if needed
+        DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
             if !self.appRemote.isConnected {
                 self.appRemote.connect()
             }
         }
-        
     }
-
-    func appRemote(_ appRemote: SPTAppRemote, didDisconnectWithError error: (any Error)?) {
+    
+    func appRemote(_ appRemote: SPTAppRemote, didDisconnectWithError error: Error?) {
         print("AppRemote disconnected: \(error?.localizedDescription ?? "unknown")")
-        
-        DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) {
+        // Retry connecting after delay if needed
+        DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
             if !self.appRemote.isConnected {
                 self.appRemote.connect()
             }
         }
-        
     }
-
+    
     func appRemoteDidEstablishConnection(_ appRemote: SPTAppRemote) {
         print("AppRemote connected to Spotify")
         appRemote.playerAPI?.delegate = self
-        appRemote.playerAPI?.subscribe(toPlayerState: { _, error in
+        appRemote.playerAPI?.subscribe(toPlayerState: { (result, error) in
             if let error = error {
                 print("Failed to subscribe to player state: \(error.localizedDescription)")
             }
@@ -186,11 +188,11 @@ extension SpotifySessionManager: SPTAppRemoteDelegate {
             pendingTrackURI = nil
         }
     }
-
 }
 
+// MARK: - SPTAppRemotePlayerStateDelegate
 extension SpotifySessionManager: SPTAppRemotePlayerStateDelegate {
-    func playerStateDidChange(_ playerState: any SPTAppRemotePlayerState) {
+    func playerStateDidChange(_ playerState: SPTAppRemotePlayerState) {
         print("Spotify Track: \(playerState.track.name)")
         delegate?.didChangePlayerState(playerState)
     }

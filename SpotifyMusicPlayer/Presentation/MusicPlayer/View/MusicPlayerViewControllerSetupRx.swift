@@ -86,8 +86,7 @@ extension MusicPlayerViewController {
         
         songListCollectionView.rx
             .modelSelected(Item.self)
-            .subscribe(onNext: { [weak self] item in
-                guard let self = self else { return }
+            .subscribe(onNext: { item in
                 
                 let uri = item.uri
                 print("Request to play URI: \(uri)")
