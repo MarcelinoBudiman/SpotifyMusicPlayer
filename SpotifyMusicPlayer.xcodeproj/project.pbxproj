@@ -11,6 +11,7 @@
 		7A0EB2E22DD84C9B0031D44A /* RxSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 7A0EB2E12DD84C9B0031D44A /* RxSwift */; };
 		7A0EB2E42DD84C9F0031D44A /* RxCocoa in Frameworks */ = {isa = PBXBuildFile; productRef = 7A0EB2E32DD84C9F0031D44A /* RxCocoa */; };
 		7A0EB2E62DD84CA70031D44A /* RxRelay in Frameworks */ = {isa = PBXBuildFile; productRef = 7A0EB2E52DD84CA70031D44A /* RxRelay */; };
+		7A0EB3752DD873880031D44A /* Kingfisher in Frameworks */ = {isa = PBXBuildFile; productRef = 7A0EB3742DD873880031D44A /* Kingfisher */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -47,6 +48,7 @@
 				7A0EB2E22DD84C9B0031D44A /* RxSwift in Frameworks */,
 				7A0EB2E62DD84CA70031D44A /* RxRelay in Frameworks */,
 				7A0EB25A2DD82E180031D44A /* SpotifyiOS in Frameworks */,
+				7A0EB3752DD873880031D44A /* Kingfisher in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -101,6 +103,7 @@
 				7A0EB2E12DD84C9B0031D44A /* RxSwift */,
 				7A0EB2E32DD84C9F0031D44A /* RxCocoa */,
 				7A0EB2E52DD84CA70031D44A /* RxRelay */,
+				7A0EB3742DD873880031D44A /* Kingfisher */,
 			);
 			productName = SpotifyMusicPlayer;
 			productReference = 7A0EB23F2DD827630031D44A /* SpotifyMusicPlayer.app */;
@@ -133,6 +136,7 @@
 			packageReferences = (
 				7A0EB2582DD82E180031D44A /* XCRemoteSwiftPackageReference "ios-sdk" */,
 				7A0EB2AF2DD849930031D44A /* XCRemoteSwiftPackageReference "RxSwift" */,
+				7A0EB3732DD873880031D44A /* XCRemoteSwiftPackageReference "Kingfisher" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 7A0EB2402DD827630031D44A /* Products */;
@@ -380,6 +384,14 @@
 				minimumVersion = 6.9.0;
 			};
 		};
+		7A0EB3732DD873880031D44A /* XCRemoteSwiftPackageReference "Kingfisher" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/onevcat/Kingfisher";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 8.3.2;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -402,6 +414,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 7A0EB2AF2DD849930031D44A /* XCRemoteSwiftPackageReference "RxSwift" */;
 			productName = RxRelay;
+		};
+		7A0EB3742DD873880031D44A /* Kingfisher */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 7A0EB3732DD873880031D44A /* XCRemoteSwiftPackageReference "Kingfisher" */;
+			productName = Kingfisher;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

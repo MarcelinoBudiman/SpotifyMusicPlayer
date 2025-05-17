@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import Kingfisher
 
 class SongCollectionViewCell: UICollectionViewCell {
     
@@ -99,6 +100,9 @@ class SongCollectionViewCell: UICollectionViewCell {
     }
     
     func injectCell(image: String, title: String, artist: [Artist], album: String) {
+        
+        songImageView.kf.setImage(with: URL(string: image))
+        
         self.songTitleLabel.text = title
         self.songArtistLabel.text = artist.map { $0.name }.joined(separator: ", ")
         self.songAlbumLabel.text = album

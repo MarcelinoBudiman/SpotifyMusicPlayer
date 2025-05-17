@@ -13,8 +13,24 @@ import UIKit
 extension MusicPlayerViewController {
     
     func setupRx() {
+        setupLoadingRx()
         setupSearchBarRx()
         setupCollectionViewRx()
+    }
+    
+    func setupLoadingRx() {
+        vm.isLoadingRelay
+            .observe(on: MainScheduler.instance)
+            .subscribe { loading in
+                self.isLoading = loading
+                
+                if loading {
+                    LoadingIndicator.shared.show()
+                } else {
+                    LoadingIndicator.shared.hide()
+                }
+            }
+            .disposed(by: disposeBag)
     }
     
     func setupSearchBarRx() {
@@ -24,7 +40,7 @@ extension MusicPlayerViewController {
             .distinctUntilChanged()
             .observe(on: MainScheduler.instance)
             .subscribe { [weak self] query in
-                if !(self?.vm.isLoading ?? false) {
+                if !(self?.isLoading ?? false) && query != "" {
                     Task {
                         await self?.vm.fetchMusicByArtist(q: query)
                     }
@@ -37,6 +53,7 @@ extension MusicPlayerViewController {
         
         self.songListCollectionView.rx
             .setDelegate(self)
+            .disposed(by: disposeBag)
         
         self.vm.songListPublishSubject
             .observe(on: MainScheduler.instance)
@@ -54,7 +71,7 @@ extension MusicPlayerViewController {
                 }
             }
             .bind(to: songListCollectionView.rx.items(cellIdentifier: SongCollectionViewCell.identifier, cellType: SongCollectionViewCell.self)) { _, data, cell in
-                cell.injectCell(image: "", title: data.name, artist: data.artists, album: data.album.name)
+                cell.injectCell(image: data.album.images.isEmpty ? "" : data.album.images[0].url, title: data.name, artist: data.artists, album: data.album.name)
             }
             .disposed(by: disposeBag)
     }

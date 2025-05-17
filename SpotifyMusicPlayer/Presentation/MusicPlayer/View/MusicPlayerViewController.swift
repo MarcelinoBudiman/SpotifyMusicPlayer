@@ -40,6 +40,7 @@ class MusicPlayerViewController: UIViewController {
         return collectionView
     }()
     
+    var isLoading = false
     let vm = MusicPlayerViewModel()
     let disposeBag = DisposeBag()
 

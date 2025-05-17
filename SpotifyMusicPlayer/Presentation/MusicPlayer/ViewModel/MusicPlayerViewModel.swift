@@ -7,17 +7,18 @@
 
 import Foundation
 import RxSwift
+import RxRelay
 
 class MusicPlayerViewModel {
     
     let musicPlayerNetworkClient = NetworkSessionClient<MusicPlayerEndPoint>()
     let songListPublishSubject = PublishSubject<ObservableEventEnum<SearchResult>>()
     
-    var isLoading = false
+    let isLoadingRelay = BehaviorRelay<Bool>(value: false)
     
     func fetchMusicByArtist(q: String) async {
         
-        self.isLoading = true
+        self.isLoadingRelay.accept(true)
         
         let parameters = ["q" : "artist:\(q)",
                           "type" : "track",
@@ -27,11 +28,11 @@ class MusicPlayerViewModel {
         
         switch result {
         case .success(let data):
-            self.isLoading = false
+            self.isLoadingRelay.accept(false)
             songListPublishSubject.onNext(.next(data))
         case .failure(let error):
             // show error state
-            self.isLoading = false
+            self.isLoadingRelay.accept(false)
             print("Error fetching data from server \(error)")
             songListPublishSubject.onNext(.error(error))
         }
