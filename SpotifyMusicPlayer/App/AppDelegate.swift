@@ -20,9 +20,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     lazy var configuration = SPTConfiguration(clientID: SpotifyClientID, redirectURL: SpotifyRedirectURL)
     
     lazy var appRemote: SPTAppRemote = {
-      let appRemote = SPTAppRemote(configuration: self.configuration, logLevel: .debug)
+        let appRemote = SPTAppRemote(configuration: self.configuration, logLevel: .debug)
         appRemote.connectionParameters.accessToken = UserDefaults.standard.string(forKey: "accessToken")
-      appRemote.delegate = self
+        appRemote.connect()
+        appRemote.delegate = self
       return appRemote
     }()
 
