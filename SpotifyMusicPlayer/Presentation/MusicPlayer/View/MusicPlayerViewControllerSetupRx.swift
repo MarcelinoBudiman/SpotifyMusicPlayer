@@ -83,6 +83,22 @@ extension MusicPlayerViewController {
                 cell.injectCell(image: data.album.images.isEmpty ? "" : data.album.images[0].url, title: data.name, artist: data.artists, album: data.album.name)
             }
             .disposed(by: disposeBag)
+        
+        songListCollectionView.rx
+            .modelSelected(Item.self)
+            .subscribe(onNext: { [weak self] item in
+                guard let self = self else { return }
+                
+                let uri = item.uri
+                print("Request to play URI: \(uri)")
+
+                SpotifySessionManager.shared.play(uri: uri)
+            })
+            .disposed(by: disposeBag)
+
+
+
+        
     }
     
 }
