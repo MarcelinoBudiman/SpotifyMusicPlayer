@@ -7,6 +7,7 @@
 
 import Foundation
 import SpotifyiOS
+import RxSwift
 
 
 protocol SpotifyPlayerDelegate: AnyObject {
@@ -23,6 +24,14 @@ class SpotifySessionManager: NSObject {
     weak var delegate: SpotifyPlayerDelegate?
     
     private var pendingTrackURI: String?
+    
+    // Rx Subject for player state updates
+    private let playerStateSubject = PublishSubject<SPTAppRemotePlayerState>()
+   
+    // Public observable for subscribers
+    var playerStateObservable: Observable<SPTAppRemotePlayerState> {
+       playerStateSubject.asObservable()
+    }
     
     private lazy var configuration: SPTConfiguration = {
         let config = SPTConfiguration(clientID: clientID, redirectURL: redirectURI)
@@ -194,6 +203,9 @@ extension SpotifySessionManager: SPTAppRemoteDelegate {
 extension SpotifySessionManager: SPTAppRemotePlayerStateDelegate {
     func playerStateDidChange(_ playerState: SPTAppRemotePlayerState) {
         print("Spotify Track: \(playerState.track.name)")
+        
+        playerStateSubject.onNext(playerState)
+        
         delegate?.didChangePlayerState(playerState)
     }
 }

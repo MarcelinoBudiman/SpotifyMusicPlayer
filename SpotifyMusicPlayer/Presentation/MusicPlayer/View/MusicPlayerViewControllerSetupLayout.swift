@@ -28,7 +28,7 @@ extension MusicPlayerViewController {
             songListCollectionView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
             songListCollectionView.bottomAnchor.constraint(equalTo: trackPlayerView.topAnchor),
             
-            trackPlayerView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
+            trackPlayerView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
             trackPlayerView.heightAnchor.constraint(equalTo: view.heightAnchor, multiplier: 0.15),
             trackPlayerView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             trackPlayerView.trailingAnchor.constraint(equalTo: view.trailingAnchor)

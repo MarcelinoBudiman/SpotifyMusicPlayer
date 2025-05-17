@@ -16,6 +16,7 @@ extension MusicPlayerViewController {
         setupLoadingRx()
         setupSearchBarRx()
         setupCollectionViewRx()
+        setupTrackManagerRx()
     }
     
     func setupLoadingRx() {
@@ -94,10 +95,15 @@ extension MusicPlayerViewController {
                 SpotifySessionManager.shared.play(uri: uri)
             })
             .disposed(by: disposeBag)
-
-
-
         
+    }
+    
+    func setupTrackManagerRx() {
+        SpotifySessionManager.shared.playerStateObservable
+            .bind(to: Binder(trackPlayerView) { view, state in
+                view.updatePlayerState(state)
+            })
+            .disposed(by: disposeBag)
     }
     
 }

@@ -60,6 +60,14 @@ class MusicPlayerViewController: UIViewController {
         setupHideKeyboard()
         
         SpotifySessionManager.shared.connectAppRemote()
+        SpotifySessionManager.shared.delegate = self
+        
+        trackPlayerView.startProgressTimer()
+        
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        trackPlayerView.stopProgressTimer()
     }
 
 }

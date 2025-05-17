@@ -21,8 +21,7 @@ extension MusicPlayerViewController: UICollectionViewDelegate, UICollectionViewD
 extension MusicPlayerViewController: SpotifyPlayerDelegate {
     func didChangePlayerState(_ state: any SPTAppRemotePlayerState) {
         DispatchQueue.main.async {
-            self.trackPlayerView.update(with: state)
-            self.trackPlayerView.isHidden = false
+            self.trackPlayerView.updatePlayerState(state)
         }
     }
 }
