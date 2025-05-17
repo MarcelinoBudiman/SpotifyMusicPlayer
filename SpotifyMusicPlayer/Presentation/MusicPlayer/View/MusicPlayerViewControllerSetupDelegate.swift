@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import SpotifyiOS
 
 extension MusicPlayerViewController: UICollectionViewDelegate, UICollectionViewDelegateFlowLayout {
     
@@ -15,6 +16,14 @@ extension MusicPlayerViewController: UICollectionViewDelegate, UICollectionViewD
         return CGSize(width: width, height: width/3)
     }
     
+}
+
+extension MusicPlayerViewController: SpotifyPlayerDelegate {
+    func didChangePlayerState(_ state: any SPTAppRemotePlayerState) {
+        DispatchQueue.main.async {
+            self.trackPlayerView.updatePlayerState(state)
+        }
+    }
 }
 
 //extension MusicPlayerViewController: UISearchBarDelegate {

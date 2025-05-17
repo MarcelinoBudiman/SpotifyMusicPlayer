@@ -16,6 +16,7 @@ extension MusicPlayerViewController {
         setupLoadingRx()
         setupSearchBarRx()
         setupCollectionViewRx()
+        setupTrackManagerRx()
     }
     
     func setupLoadingRx() {
@@ -82,6 +83,26 @@ extension MusicPlayerViewController {
             .bind(to: songListCollectionView.rx.items(cellIdentifier: SongCollectionViewCell.identifier, cellType: SongCollectionViewCell.self)) { _, data, cell in
                 cell.injectCell(image: data.album.images.isEmpty ? "" : data.album.images[0].url, title: data.name, artist: data.artists, album: data.album.name)
             }
+            .disposed(by: disposeBag)
+        
+        songListCollectionView.rx
+            .modelSelected(Item.self)
+            .subscribe(onNext: { item in
+                
+                let uri = item.uri
+                print("Request to play URI: \(uri)")
+
+                SpotifySessionManager.shared.play(uri: uri)
+            })
+            .disposed(by: disposeBag)
+        
+    }
+    
+    func setupTrackManagerRx() {
+        SpotifySessionManager.shared.playerStateObservable
+            .bind(to: Binder(trackPlayerView) { view, state in
+                view.updatePlayerState(state)
+            })
             .disposed(by: disposeBag)
     }
     

@@ -15,6 +15,7 @@ extension MusicPlayerViewController {
         
         view.addSubview(searchBar)
         view.addSubview(songListCollectionView)
+        view.addSubview(trackPlayerView)
         
         NSLayoutConstraint.activate([
             
@@ -25,7 +26,12 @@ extension MusicPlayerViewController {
             songListCollectionView.topAnchor.constraint(equalToSystemSpacingBelow: searchBar.bottomAnchor, multiplier: 2),
             songListCollectionView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             songListCollectionView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            songListCollectionView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: 2),
+            songListCollectionView.bottomAnchor.constraint(equalTo: trackPlayerView.topAnchor),
+            
+            trackPlayerView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
+            trackPlayerView.heightAnchor.constraint(equalTo: view.heightAnchor, multiplier: 0.15),
+            trackPlayerView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            trackPlayerView.trailingAnchor.constraint(equalTo: view.trailingAnchor)
             
         ])
         
