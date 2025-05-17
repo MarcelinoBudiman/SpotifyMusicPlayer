@@ -16,6 +16,8 @@ class MusicPlayerViewController: UIViewController {
         
         searchBar.translatesAutoresizingMaskIntoConstraints = false
         searchBar.placeholder = "Search Artist"
+        searchBar.backgroundColor = .lightGray
+        searchBar.searchBarStyle = .minimal
         
         return searchBar
         
@@ -25,10 +27,15 @@ class MusicPlayerViewController: UIViewController {
         
         let layout: UICollectionViewFlowLayout = UICollectionViewFlowLayout()
         layout.scrollDirection = .vertical
+        layout.minimumLineSpacing = 8
+        layout.minimumInteritemSpacing = 8
         
         let collectionView: UICollectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
         
         collectionView.translatesAutoresizingMaskIntoConstraints = false
+        collectionView.backgroundColor = .lightGray
+        
+        collectionView.register(SongCollectionViewCell.self, forCellWithReuseIdentifier: SongCollectionViewCell.identifier)
         
         return collectionView
     }()

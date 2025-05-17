@@ -34,9 +34,13 @@ extension MusicPlayerViewController {
     }
     
     func setupCollectionViewRx() {
+        
+        self.songListCollectionView.rx
+            .setDelegate(self)
+        
         self.vm.songListPublishSubject
             .observe(on: MainScheduler.instance)
-            .compactMap { event -> Observable<[Item]> in
+            .flatMap { event -> Observable<[Item]> in
                 switch event {
                     
                 case .next(let data):
@@ -49,9 +53,9 @@ extension MusicPlayerViewController {
                     
                 }
             }
-            .subscribe(onNext: { data in
-                
-            })
+            .bind(to: songListCollectionView.rx.items(cellIdentifier: SongCollectionViewCell.identifier, cellType: SongCollectionViewCell.self)) { _, data, cell in
+                cell.injectCell(image: "", title: data.name, artist: data.artists, album: data.album.name)
+            }
             .disposed(by: disposeBag)
     }
     

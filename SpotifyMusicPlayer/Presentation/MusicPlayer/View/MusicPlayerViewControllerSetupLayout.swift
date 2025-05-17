@@ -11,7 +11,7 @@ extension MusicPlayerViewController {
     
     func setupLayout() {
         
-        view.backgroundColor = .white
+        view.backgroundColor = .lightGray
         
         view.addSubview(searchBar)
         view.addSubview(songListCollectionView)

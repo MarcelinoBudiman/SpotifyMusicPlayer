@@ -34,7 +34,7 @@ class SongCollectionViewCell: UICollectionViewCell {
         let label = UILabel()
         label.font = UIFont.systemFont(ofSize: 12, weight: .medium)
         label.textColor = .darkGray
-        label.numberOfLines = 1
+        label.numberOfLines = 2
         
         label.translatesAutoresizingMaskIntoConstraints = false
         
@@ -51,6 +51,8 @@ class SongCollectionViewCell: UICollectionViewCell {
         
         return label
     }()
+    
+    static let identifier = "SongCollectionViewCell"
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -94,6 +96,12 @@ class SongCollectionViewCell: UICollectionViewCell {
         ])
         
         
+    }
+    
+    func injectCell(image: String, title: String, artist: [Artist], album: String) {
+        self.songTitleLabel.text = title
+        self.songArtistLabel.text = artist.map { $0.name }.joined(separator: ", ")
+        self.songAlbumLabel.text = album
     }
     
 }

@@ -7,6 +7,12 @@
 
 import UIKit
 
-extension MusicPlayerViewController: UICollectionViewDelegate {
+extension MusicPlayerViewController: UICollectionViewDelegate, UICollectionViewDelegateFlowLayout {
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        let width = collectionView.frame.width
+        
+        return CGSize(width: width, height: width/2)
+    }
     
 }
