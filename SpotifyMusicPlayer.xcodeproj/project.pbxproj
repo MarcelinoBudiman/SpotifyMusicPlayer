@@ -115,6 +115,7 @@
 			minimizedProjectReferenceProxies = 1;
 			packageReferences = (
 				7A0EB2582DD82E180031D44A /* XCRemoteSwiftPackageReference "ios-sdk" */,
+				7A0EB2AF2DD849930031D44A /* XCRemoteSwiftPackageReference "RxSwift" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 7A0EB2402DD827630031D44A /* Products */;
@@ -352,6 +353,14 @@
 			requirement = {
 				branch = master;
 				kind = branch;
+			};
+		};
+		7A0EB2AF2DD849930031D44A /* XCRemoteSwiftPackageReference "RxSwift" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/ReactiveX/RxSwift";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 6.9.0;
 			};
 		};
 /* End XCRemoteSwiftPackageReference section */
