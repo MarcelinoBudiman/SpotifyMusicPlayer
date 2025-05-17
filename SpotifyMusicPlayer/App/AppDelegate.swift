@@ -12,32 +12,6 @@ import SpotifyiOS
 class AppDelegate: UIResponder, UIApplicationDelegate {
     
     var window: UIWindow?
-    
-    // MARK: Initializze Spotify Client SDK
-    let SpotifyClientID = "938424997fbb41e095914f59d0038930"
-    let SpotifyRedirectURL = URL(string: "spotify-music-player://spotify-login-callback")!
-
-    lazy var configuration: SPTConfiguration = {
-        let config = SPTConfiguration(clientID: SpotifyClientID, redirectURL: SpotifyRedirectURL)
-        
-        config.tokenSwapURL = nil
-        config.tokenRefreshURL = nil
-        config.playURI = ""
-        
-        return config
-    }()
-    
-    lazy var sessionManager: SPTSessionManager = {
-       let manager = SPTSessionManager(configuration: configuration, delegate: self)
-       return manager
-    }()
-    
-    lazy var appRemote: SPTAppRemote = {
-        let appRemote = SPTAppRemote(configuration: self.configuration, logLevel: .debug)
-        appRemote.delegate = self
-      return appRemote
-    }()
-
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
@@ -54,36 +28,17 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     func application(_ app: UIApplication, open url: URL, options: [UIApplication.OpenURLOptionsKey : Any] = [:]) -> Bool {
         
-        if sessionManager.application(app, open: url, options: options) {
-            return true
-        }
+        SpotifySessionManager.shared.handleURL(url)
         
-        let parameters = appRemote.authorizationParameters(from: url)
-
-        if let access_token = parameters?[SPTAppRemoteAccessTokenKey] {
-            appRemote.connectionParameters.accessToken = access_token
-            
-            UserDefaults.standard.set(access_token, forKey: "accessToken")
-            
-            } else if let error_description = parameters?[SPTAppRemoteErrorDescriptionKey] {
-                // Show the error
-                print("Spotify Auth Error: \(error_description)")
-            }
-        
-        return false
+        return true
     }
     
     func applicationWillResignActive(_ application: UIApplication) {
-        if self.appRemote.isConnected {
-            self.appRemote.disconnect()
-        }
+        SpotifySessionManager.shared.disconnectAppRemote()
     }
     
     func applicationDidBecomeActive(_ application: UIApplication) {
-        if let token = self.appRemote.connectionParameters.accessToken {
-            appRemote.connectionParameters.accessToken = token
-            self.appRemote.connect()
-        }
+        SpotifySessionManager.shared.connectAppRemote()
     }
 
     // MARK: UISceneSession Lifecycle
@@ -103,51 +58,4 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
 }
 
-extension AppDelegate: SPTSessionManagerDelegate {
-    
-    func sessionManager(manager: SPTSessionManager, didInitiate session: SPTSession) {
-        print("Spotify session initiated!")
-        
-        UserDefaults.standard.set(session.accessToken, forKey: "accessToken")
-        appRemote.connectionParameters.accessToken = session.accessToken
-        appRemote.connect()
-        
-    }
-    
-    func sessionManager(manager: SPTSessionManager, didFailWith error: any Error) {
-        print("Spotify login failed: \(error)")
-    }
-    
-}
-
-extension AppDelegate: SPTAppRemoteDelegate, SPTAppRemotePlayerStateDelegate {
-    
-    func appRemote(_ appRemote: SPTAppRemote, didFailConnectionAttemptWithError error: (any Error)?) {
-        print("Failed to connect to spotify!")
-    }
-    
-    func appRemote(_ appRemote: SPTAppRemote, didDisconnectWithError error: (any Error)?) {
-        print("Disconnected from spotify!")
-    }
-    
-    func appRemoteDidEstablishConnection(_ appRemote: SPTAppRemote) {
-        print("Connected to spotify!")
-        
-        self.appRemote.playerAPI?.delegate = self
-        
-        self.appRemote.playerAPI?.subscribe(toPlayerState: { (result, error) in
-            if let error = error {
-                debugPrint("Error subscribing to player state = " + error.localizedDescription)
-            }
-      })
-        
-    }
-    
-    func playerStateDidChange(_ playerState: any SPTAppRemotePlayerState) {
-        print("player state changed")
-        
-        debugPrint("Track name: \(playerState.track.name)")
-    }
-    
-}
 
