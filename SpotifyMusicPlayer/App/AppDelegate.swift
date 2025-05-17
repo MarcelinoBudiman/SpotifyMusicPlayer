@@ -17,7 +17,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         window = UIWindow(frame: UIScreen.main.bounds)
         
-        let rootVC = ViewController()
+        let rootVC = MusicPlayerViewController()
         
         window?.rootViewController = UINavigationController(rootViewController: rootVC)
         window?.makeKeyAndVisible()
@@ -37,7 +37,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
     
     func applicationDidBecomeActive(_ application: UIApplication) {
-        SpotifySessionManager.shared.connectAppRemote()
+        if SpotifySessionManager.shared.isLoggedIn() {
+            SpotifySessionManager.shared.connectAppRemote()
+        } else {
+            // No valid token — prompt user login
+            if let vc = window?.rootViewController {
+                SpotifySessionManager.shared.login(from: vc)
+            }
+        }
     }
 
     // MARK: UISceneSession Lifecycle

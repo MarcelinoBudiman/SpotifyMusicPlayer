@@ -38,7 +38,7 @@ class SpotifySessionManager: NSObject {
     
     private let sessionKey = "spotifySession"
     
-    private var session: SpotifySessionData? {
+    var session: SpotifySessionData? {
         didSet {
             guard let session = session else { return }
             if let encoded = try? JSONEncoder().encode(session) {
@@ -97,11 +97,13 @@ class SpotifySessionManager: NSObject {
     }
     
     func renew() {
-        guard let refreshToken = session?.refreshToken else {
-            return
-        }
         sessionManager.renewSession()
     }
+    
+    func isLoggedIn() -> Bool {
+        return session?.expirationDate ?? Date.distantPast > Date()
+    }
+    
 }
 
 // MARK: - Implement Spotify SDK Delegate
@@ -115,6 +117,12 @@ extension SpotifySessionManager: SPTSessionManagerDelegate {
     func sessionManager(manager: SPTSessionManager, didFailWith error: any Error) {
         print("Spotify session failed: \(error.localizedDescription)")
     }
+    
+    func sessionManager(manager: SPTSessionManager, didRenew session: SPTSession) {
+        self.session = SpotifySessionData(accessToken: session.accessToken, refreshToken: session.refreshToken, expirationDate: session.expirationDate)
+        connectAppRemote()
+    }
+    
 }
 
 extension SpotifySessionManager: SPTAppRemoteDelegate {

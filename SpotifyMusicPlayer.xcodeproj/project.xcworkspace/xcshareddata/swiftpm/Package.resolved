@@ -1,5 +1,5 @@
 {
-  "originHash" : "1c78ec4c864394dd305bb035534c9f8aa226121d92b714af20bc936977fff195",
+  "originHash" : "9e2d4127a36cd18e05493dfc23ab14d76478bbe8098238456429a00eff2153a9",
   "pins" : [
     {
       "identity" : "ios-sdk",
@@ -8,6 +8,24 @@
       "state" : {
         "branch" : "master",
         "revision" : "af71ec0bcf3baa7ec88c72119b7fdf65eb91fd67"
+      }
+    },
+    {
+      "identity" : "kingfisher",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/onevcat/Kingfisher",
+      "state" : {
+        "revision" : "7deda23bbdca612076c5c315003d8638a08ed0f1",
+        "version" : "8.3.2"
+      }
+    },
+    {
+      "identity" : "rxswift",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/ReactiveX/RxSwift",
+      "state" : {
+        "revision" : "5dd1907d64f0d36f158f61a466bab75067224893",
+        "version" : "6.9.0"
       }
     }
   ],
