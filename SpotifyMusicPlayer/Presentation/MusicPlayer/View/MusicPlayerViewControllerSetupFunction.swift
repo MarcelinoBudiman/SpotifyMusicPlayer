@@ -9,6 +9,15 @@ import UIKit
 
 extension MusicPlayerViewController {
     
+    func showError(message: String) {
+        DispatchQueue.main.async {
+            let popup = ErrorPopupView(message: message)
+            if let window = UIApplication.shared.windows.first(where: { $0.isKeyWindow }) {
+                window.addSubview(popup)
+            }
+        }
+    }
+
     func setupHideKeyboard() {
         
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard))

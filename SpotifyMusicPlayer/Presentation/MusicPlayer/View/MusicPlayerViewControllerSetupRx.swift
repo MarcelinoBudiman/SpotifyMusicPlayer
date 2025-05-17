@@ -40,7 +40,7 @@ extension MusicPlayerViewController {
             .distinctUntilChanged()
             .observe(on: MainScheduler.instance)
             .subscribe { [weak self] query in
-                if !(self?.isLoading ?? false) && query != "" {
+                if !(self?.isLoading ?? false) {
                     Task {
                         await self?.vm.fetchMusicByArtist(q: query)
                     }
@@ -64,6 +64,7 @@ extension MusicPlayerViewController {
                     return Observable.just(data.tracks.items)
                 case .error(let error):
                     // show error message
+                    self.showError(message: error.rawValue)
                     return Observable.empty()
                 default:
                     return Observable.empty()
