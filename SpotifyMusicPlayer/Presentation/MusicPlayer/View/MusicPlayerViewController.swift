@@ -6,8 +6,20 @@
 //
 
 import UIKit
+import RxSwift
 
 class MusicPlayerViewController: UIViewController {
+    
+    let searchBar: UISearchBar = {
+       
+        let searchBar = UISearchBar()
+        
+        searchBar.translatesAutoresizingMaskIntoConstraints = false
+        searchBar.placeholder = "Search Artist"
+        
+        return searchBar
+        
+    }()
     
     let songListCollectionView: UICollectionView = {
         
@@ -16,8 +28,12 @@ class MusicPlayerViewController: UIViewController {
         
         let collectionView: UICollectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
         
+        collectionView.translatesAutoresizingMaskIntoConstraints = false
+        
         return collectionView
     }()
+    
+    let disposeBag = DisposeBag()
 
     override func viewDidLoad() {
         super.viewDidLoad()

@@ -11,6 +11,7 @@ extension MusicPlayerViewController {
     
     func setupLayout() {
         
+        view.addSubview(searchBar)
         view.addSubview(songListCollectionView)
         
         NSLayoutConstraint.activate([
